@@ -1,0 +1,44 @@
+exclude: "migrations|.git"
+default_stages: [commit]
+fail_fast: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+        description: Prevent accidentally commiting files with merge conflicts.
+      - id: end-of-file-fixer
+        name: Fix End of Files.
+        description: Ensures that a file is either empty, or ends with one newline.
+
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.9.3
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]
+
+  - repo: https://github.com/psf/black
+    rev: 21.9b0
+    hooks:
+      - id: black
+        args: [--line-length=120, --safe]
+        language_version: python3
+
+  - repo: https://github.com/myint/autoflake
+    rev: v1.4
+    hooks:
+      - id: autoflake
+        args: [--in-place, --remove-all-unused-import]
+
+  - repo: local
+    hooks:
+      - id: pre-commit-django-migrations
+        name: Check django migrations
+        entry: python manage.py makemigrations --dry-run
+        language: system
+        types: [python]
+        pass_filenames: false
+        require_serial: true
