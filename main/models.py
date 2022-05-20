@@ -33,7 +33,7 @@ class Trainer(models.Model):
     user = models.ForeignKey(User(models.Model), on_delete=models.CASCADE)
     kyc_option = models.CharField(max_length=100, blank=True)
     kyc = models.ImageField(blank=True)
-    kyc_approved = models.BooleanField()
+    kyc_approved = models.BooleanField(default=False)
     basic_salary = models.IntegerField()
 
 
